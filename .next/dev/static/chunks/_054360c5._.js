@@ -269,7 +269,7 @@ function HomePage() {
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "absolute bottom-[6px] right-[38px] h-1.5 w-1.5 rounded-full bg-red-500 sm:bottom-[8px] sm:right-[46px] sm:h-2 sm:w-2",
+                                    className: "absolute bottom-[5px] right-[58px] h-1.5 w-1.5 rounded-full bg-red-500 sm:bottom-[6px] sm:right-[70px] sm:h-2 sm:w-2",
                                     style: {
                                         animation: 'blink 1s infinite'
                                     }
