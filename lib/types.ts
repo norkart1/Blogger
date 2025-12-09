@@ -1,42 +1,41 @@
 import type { ObjectId } from "mongodb"
 
-export interface Book {
+export interface Post {
   _id?: ObjectId
   title: string
-  author: string
-  isbn: string
+  slug: string
+  content: string
+  excerpt: string
   category: string
-  publishedYear: number
-  quantity: number
-  availableQuantity: number
-  description?: string
+  author: string
+  coverImage?: string
+  tags: string[]
+  published: boolean
+  views: number
   createdAt: Date
   updatedAt: Date
 }
 
-export interface Member {
+export interface Author {
   _id?: ObjectId
   name: string
   email: string
-  phone: string
-  address: string
-  membershipDate: Date
-  membershipType: "standard" | "premium"
+  bio: string
+  avatar?: string
+  role: "admin" | "author"
   status: "active" | "inactive"
   createdAt: Date
   updatedAt: Date
 }
 
-export interface BorrowRecord {
+export interface Comment {
   _id?: ObjectId
-  bookId: ObjectId
-  memberId: ObjectId
-  bookTitle: string
-  memberName: string
-  borrowDate: Date
-  dueDate: Date
-  returnDate?: Date
-  status: "borrowed" | "returned" | "overdue"
+  postId: ObjectId
+  postTitle: string
+  authorName: string
+  authorEmail: string
+  content: string
+  approved: boolean
   createdAt: Date
   updatedAt: Date
 }
