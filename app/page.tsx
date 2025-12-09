@@ -10,7 +10,7 @@ export default function HomePage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
             <BookOpen className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-foreground">LibraryHub</span>
+            <span className="text-xl font-bold text-foreground">BlogHub</span>
           </Link>
           <nav className="flex items-center gap-4">
             <Link href="/catalog">
@@ -107,10 +107,10 @@ export default function HomePage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
             <BookOpen className="h-6 w-6 text-primary" />
-            <span className="font-semibold text-foreground">LibraryHub</span>
+            <span className="font-semibold text-foreground">BlogHub</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} LibraryHub. All rights reserved.
+            &copy; {new Date().getFullYear()} BlogHub. All rights reserved.
           </p>
         </div>
       </footer>

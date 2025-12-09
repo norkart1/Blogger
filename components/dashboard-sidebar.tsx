@@ -22,7 +22,7 @@ export function DashboardSidebar() {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sidebar-primary">
             <BookMarked className="h-5 w-5 text-sidebar-primary-foreground" />
           </div>
-          <span className="text-lg font-semibold">LibraryMS</span>
+          <span className="text-lg font-semibold">BlogHub</span>
         </Link>
       </div>
       <nav className="px-4 pb-4">
