@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { PenLine, Bookmark, Bell, Search, Home, Compass, User, Plus, ChevronRight, Clock } from "lucide-react"
+import { PenLine, Bookmark, Bell, Home, Compass, User, Plus, ChevronRight, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
@@ -97,25 +97,25 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+    <div className="min-h-screen bg-[#F2F2F7]">
+      <header className="sticky top-0 z-50 bg-[#F2F2F7]/80 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-lg items-center justify-between px-4 py-3">
           <Link href="/" className="flex items-center">
             <Image
               src="/logo.png"
               alt="Al Jawahir"
-              width={180}
-              height={50}
-              className="h-10 w-auto object-contain sm:h-12"
+              width={160}
+              height={45}
+              className="h-9 w-auto object-contain"
               priority
             />
           </Link>
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" className="text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-gray-600 hover:bg-gray-200/60">
               <Bell className="h-5 w-5" />
             </Button>
             <Link href="/catalog">
-              <Button variant="ghost" size="icon" className="text-muted-foreground">
+              <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-gray-600 hover:bg-gray-200/60">
                 <Bookmark className="h-5 w-5" />
               </Button>
             </Link>
@@ -123,21 +123,20 @@ export default function HomePage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6">
-        <div className="relative mb-8 overflow-hidden rounded-3xl bg-gradient-to-r from-primary to-accent/70 shadow-lg">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 p-6 text-primary-foreground md:py-8 md:pl-8">
-              <h2 className="mb-3 text-lg font-bold leading-snug md:text-2xl">Learn how to become a great writer right now!</h2>
+      <main className="mx-auto max-w-lg px-4 pb-24 pt-2">
+        <div className="mb-6 overflow-hidden rounded-[20px] bg-gradient-to-r from-[#FF6B35] to-[#F7931E] shadow-sm">
+          <div className="flex items-center">
+            <div className="flex-1 p-5">
+              <h2 className="mb-3 text-[17px] font-semibold leading-tight text-white">Learn how to become a great writer right now!</h2>
               <Link href="/membership">
                 <Button 
-                  variant="secondary" 
-                  className="rounded-full border-2 border-white/30 bg-white/95 px-6 text-primary hover:bg-white"
+                  className="h-9 rounded-full bg-white px-5 text-[14px] font-medium text-[#FF6B35] shadow-sm hover:bg-white/90"
                 >
                   Read more
                 </Button>
               </Link>
             </div>
-            <div className="relative h-40 w-32 flex-shrink-0 md:h-48 md:w-48">
+            <div className="relative h-32 w-28 flex-shrink-0">
               <Image
                 src="/banner-woman.jpg"
                 alt="Woman with books"
@@ -149,77 +148,81 @@ export default function HomePage() {
           </div>
         </div>
 
-        <section className="mb-8">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-bold text-foreground">Recent Articles</h2>
-            <Link href="/catalog" className="flex items-center gap-1 text-sm text-primary hover:underline">
+        <section className="mb-6">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-[20px] font-bold text-gray-900">Recent Articles</h2>
+            <Link href="/catalog" className="flex items-center gap-0.5 text-[15px] font-medium text-[#007AFF]">
               View all
               <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
           
           {loading ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="space-y-3">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="animate-pulse rounded-2xl bg-card p-3 shadow-sm">
-                  <div className="mb-3 h-40 rounded-xl bg-muted"></div>
-                  <div className="h-4 w-3/4 rounded bg-muted"></div>
-                  <div className="mt-2 h-3 w-1/2 rounded bg-muted"></div>
+                <div key={i} className="animate-pulse overflow-hidden rounded-2xl bg-white p-3">
+                  <div className="flex gap-3">
+                    <div className="h-20 w-20 flex-shrink-0 rounded-xl bg-gray-200"></div>
+                    <div className="flex-1 py-1">
+                      <div className="h-4 w-3/4 rounded bg-gray-200"></div>
+                      <div className="mt-2 h-3 w-1/2 rounded bg-gray-200"></div>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
           ) : recentPosts.length === 0 ? (
-            <div className="rounded-2xl bg-card p-8 text-center shadow-sm">
-              <PenLine className="mx-auto h-12 w-12 text-muted-foreground" />
-              <h3 className="mt-4 text-lg font-semibold text-foreground">No articles yet</h3>
-              <p className="mt-2 text-muted-foreground">Check back soon for new content!</p>
+            <div className="rounded-2xl bg-white p-8 text-center shadow-sm">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+                <PenLine className="h-8 w-8 text-gray-400" />
+              </div>
+              <h3 className="mt-4 text-[17px] font-semibold text-gray-900">No articles yet</h3>
+              <p className="mt-1 text-[15px] text-gray-500">Check back soon for new content!</p>
               <Link href="/login">
-                <Button className="mt-4 rounded-full" variant="default">
+                <Button className="mt-4 h-11 rounded-full bg-[#007AFF] px-6 text-[15px] font-medium hover:bg-[#0066CC]">
                   Create your first article
                 </Button>
               </Link>
             </div>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {recentPosts.slice(0, 3).map((post, index) => (
-                <Link key={post._id} href="/catalog" className="group">
-                  <div className="overflow-hidden rounded-2xl bg-card shadow-sm transition-all hover:shadow-md">
-                    <div className="relative h-40 overflow-hidden">
+            <div className="space-y-3">
+              {recentPosts.slice(0, 4).map((post, index) => (
+                <Link key={post._id} href="/catalog" className="block">
+                  <div className="flex gap-3 rounded-2xl bg-white p-3 shadow-sm transition-all active:scale-[0.98]">
+                    <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl">
                       <Image
                         src={post.imageUrl || getCategoryImage(post.category, index)}
                         alt={post.title}
                         fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="object-cover"
                         unoptimized
                       />
-                      <div className="absolute right-2 top-2">
-                        <Button 
-                          variant="secondary" 
-                          size="icon" 
-                          className="h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
-                        >
-                          <Bookmark className="h-4 w-4" />
-                        </Button>
-                      </div>
                     </div>
-                    <div className="p-4">
-                      <h3 className="line-clamp-2 font-semibold text-foreground group-hover:text-primary">
+                    <div className="flex flex-1 flex-col justify-center py-0.5">
+                      <h3 className="line-clamp-2 text-[15px] font-semibold leading-tight text-gray-900">
                         {post.title}
                       </h3>
-                      <div className="mt-3 flex items-center gap-2">
-                        <Avatar className="h-6 w-6">
-                          <AvatarFallback className="bg-primary/10 text-xs text-primary">
+                      <div className="mt-2 flex items-center gap-2">
+                        <Avatar className="h-5 w-5">
+                          <AvatarFallback className="bg-gray-100 text-[10px] font-medium text-gray-600">
                             {getInitials(post.authorName || "Author")}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-sm text-muted-foreground">{post.authorName || "Unknown"}</span>
-                        <span className="text-muted-foreground">·</span>
-                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <span className="text-[13px] text-gray-500">{post.authorName || "Unknown"}</span>
+                        <span className="text-gray-300">|</span>
+                        <span className="flex items-center gap-1 text-[12px] text-gray-400">
                           <Clock className="h-3 w-3" />
                           {formatTimeAgo(post.publishedAt || post.createdAt)}
                         </span>
                       </div>
                     </div>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="my-auto h-8 w-8 flex-shrink-0 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                    >
+                      <Bookmark className="h-4 w-4" />
+                    </Button>
                   </div>
                 </Link>
               ))}
@@ -227,55 +230,44 @@ export default function HomePage() {
           )}
         </section>
 
-        {recentPosts.length > 3 && (
-          <section className="mb-8">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-foreground">More Articles</h2>
-              <Link href="/catalog" className="flex items-center gap-1 text-sm text-primary hover:underline">
-                View all
-                <ChevronRight className="h-4 w-4" />
-              </Link>
+        {recentPosts.length > 4 && (
+          <section className="mb-6">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-[20px] font-bold text-gray-900">More Articles</h2>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {recentPosts.slice(3, 6).map((post, index) => (
-                <Link key={post._id} href="/catalog" className="group">
-                  <div className="overflow-hidden rounded-2xl bg-card shadow-sm transition-all hover:shadow-md">
-                    <div className="relative h-40 overflow-hidden">
+            <div className="space-y-3">
+              {recentPosts.slice(4, 6).map((post, index) => (
+                <Link key={post._id} href="/catalog" className="block">
+                  <div className="flex gap-3 rounded-2xl bg-white p-3 shadow-sm transition-all active:scale-[0.98]">
+                    <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl">
                       <Image
-                        src={post.imageUrl || getCategoryImage(post.category, index + 3)}
+                        src={post.imageUrl || getCategoryImage(post.category, index + 4)}
                         alt={post.title}
                         fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="object-cover"
                         unoptimized
                       />
-                      <div className="absolute right-2 top-2">
-                        <Button 
-                          variant="secondary" 
-                          size="icon" 
-                          className="h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
-                        >
-                          <Bookmark className="h-4 w-4" />
-                        </Button>
-                      </div>
                     </div>
-                    <div className="p-4">
-                      <h3 className="line-clamp-2 font-semibold text-foreground group-hover:text-primary">
+                    <div className="flex flex-1 flex-col justify-center py-0.5">
+                      <h3 className="line-clamp-2 text-[15px] font-semibold leading-tight text-gray-900">
                         {post.title}
                       </h3>
-                      <div className="mt-3 flex items-center gap-2">
-                        <Avatar className="h-6 w-6">
-                          <AvatarFallback className="bg-primary/10 text-xs text-primary">
+                      <div className="mt-2 flex items-center gap-2">
+                        <Avatar className="h-5 w-5">
+                          <AvatarFallback className="bg-gray-100 text-[10px] font-medium text-gray-600">
                             {getInitials(post.authorName || "Author")}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-sm text-muted-foreground">{post.authorName || "Unknown"}</span>
-                        <span className="text-muted-foreground">·</span>
-                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <Clock className="h-3 w-3" />
-                          {formatTimeAgo(post.publishedAt || post.createdAt)}
-                        </span>
+                        <span className="text-[13px] text-gray-500">{post.authorName || "Unknown"}</span>
                       </div>
                     </div>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="my-auto h-8 w-8 flex-shrink-0 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                    >
+                      <Bookmark className="h-4 w-4" />
+                    </Button>
                   </div>
                 </Link>
               ))}
@@ -283,12 +275,12 @@ export default function HomePage() {
           </section>
         )}
 
-        <section className="mb-24 overflow-hidden rounded-3xl bg-gradient-to-br from-secondary to-muted p-6">
+        <section className="overflow-hidden rounded-2xl bg-white p-6 shadow-sm">
           <div className="text-center">
-            <h2 className="mb-2 text-2xl font-bold text-foreground">Join Our Community</h2>
-            <p className="mb-4 text-muted-foreground">Get the latest articles delivered to your inbox</p>
+            <h2 className="text-[20px] font-bold text-gray-900">Join Our Community</h2>
+            <p className="mt-1 text-[15px] text-gray-500">Get the latest articles delivered to your inbox</p>
             <Link href="/membership">
-              <Button className="rounded-full px-6">
+              <Button className="mt-4 h-11 rounded-full bg-[#007AFF] px-8 text-[15px] font-medium hover:bg-[#0066CC]">
                 Subscribe Now
               </Button>
             </Link>
@@ -296,28 +288,28 @@ export default function HomePage() {
         </section>
       </main>
 
-      <nav className="fixed bottom-0 left-0 right-0 border-t border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
-        <div className="mx-auto flex max-w-md items-center justify-around py-2">
-          <Link href="/" className="flex flex-col items-center gap-1 p-2 text-primary">
-            <Home className="h-5 w-5" />
-            <span className="text-xs font-medium">Home</span>
+      <nav className="fixed bottom-0 left-0 right-0 border-t border-gray-200/80 bg-[#F2F2F7]/80 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-lg items-center justify-around pb-6 pt-2">
+          <Link href="/" className="flex flex-col items-center gap-0.5 px-4 py-1">
+            <Home className="h-6 w-6 text-[#007AFF]" />
+            <span className="text-[10px] font-medium text-[#007AFF]">Home</span>
           </Link>
-          <Link href="/catalog" className="flex flex-col items-center gap-1 p-2 text-muted-foreground hover:text-foreground">
-            <Compass className="h-5 w-5" />
-            <span className="text-xs">Discover</span>
+          <Link href="/catalog" className="flex flex-col items-center gap-0.5 px-4 py-1">
+            <Compass className="h-6 w-6 text-gray-400" />
+            <span className="text-[10px] text-gray-400">Discover</span>
           </Link>
-          <Link href="/login" className="flex flex-col items-center gap-1 p-2">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
-              <Plus className="h-6 w-6" />
+          <Link href="/login" className="flex flex-col items-center px-4 py-1">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#007AFF] shadow-lg shadow-blue-500/30">
+              <Plus className="h-6 w-6 text-white" />
             </div>
           </Link>
-          <Link href="/catalog" className="flex flex-col items-center gap-1 p-2 text-muted-foreground hover:text-foreground">
-            <PenLine className="h-5 w-5" />
-            <span className="text-xs">Articles</span>
+          <Link href="/catalog" className="flex flex-col items-center gap-0.5 px-4 py-1">
+            <PenLine className="h-6 w-6 text-gray-400" />
+            <span className="text-[10px] text-gray-400">Articles</span>
           </Link>
-          <Link href="/login" className="flex flex-col items-center gap-1 p-2 text-muted-foreground hover:text-foreground">
-            <User className="h-5 w-5" />
-            <span className="text-xs">Profile</span>
+          <Link href="/login" className="flex flex-col items-center gap-0.5 px-4 py-1">
+            <User className="h-6 w-6 text-gray-400" />
+            <span className="text-[10px] text-gray-400">Profile</span>
           </Link>
         </div>
       </nav>
