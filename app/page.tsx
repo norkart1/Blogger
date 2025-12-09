@@ -100,11 +100,15 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-              <PenLine className="h-5 w-5 text-primary" />
-            </div>
-            <span className="text-xl font-bold text-foreground">Scribblr</span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="Al Jawahir"
+              width={180}
+              height={50}
+              className="h-10 w-auto object-contain sm:h-12"
+              priority
+            />
           </Link>
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" className="text-muted-foreground">

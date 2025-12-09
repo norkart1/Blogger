@@ -910,6 +910,10 @@
     width: calc(var(--spacing) * 64);
   }
 
+  .w-auto {
+    width: auto;
+  }
+
   .w-fit {
     width: fit-content;
   }
@@ -1460,6 +1464,10 @@
 
   .fill-primary {
     fill: var(--primary);
+  }
+
+  .object-contain {
+    object-fit: contain;
   }
 
   .object-cover {
@@ -2348,6 +2356,12 @@
       .supports-\[backdrop-filter\]\:bg-card\/60 {
         background-color: color-mix(in oklab, var(--card) 60%, transparent);
       }
+    }
+  }
+
+  @media (min-width: 40rem) {
+    .sm\:h-12 {
+      height: calc(var(--spacing) * 12);
     }
   }
 
