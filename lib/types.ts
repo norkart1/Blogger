@@ -11,6 +11,7 @@ export interface Post {
   category: string
   tags: string[]
   status: "draft" | "published" | "archived"
+  imageUrl?: string
   publishedAt?: Date
   createdAt: Date
   updatedAt: Date
