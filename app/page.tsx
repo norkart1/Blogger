@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { PenLine, Bookmark, Bell, Home, Compass, User, Plus, ChevronRight, Clock } from "lucide-react"
+import { PenLine, Bookmark, Home, Compass, User, Plus, ChevronRight, MoreVertical } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
@@ -139,25 +139,20 @@ export default function HomePage() {
         </div>
 
         <section className="mb-6">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-[20px] font-bold text-gray-900">Recent Articles</h2>
-            <Link href="/catalog" className="flex items-center gap-0.5 text-[15px] font-medium text-[#007AFF]">
-              View all
-              <ChevronRight className="h-4 w-4" />
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-[18px] font-bold text-gray-900">Recent Articles</h2>
+            <Link href="/catalog" className="text-gray-400 hover:text-gray-600">
+              <ChevronRight className="h-5 w-5" />
             </Link>
           </div>
           
           {loading ? (
-            <div className="space-y-3">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="animate-pulse overflow-hidden rounded-2xl bg-white p-3">
-                  <div className="flex gap-3">
-                    <div className="h-20 w-20 flex-shrink-0 rounded-xl bg-gray-200"></div>
-                    <div className="flex-1 py-1">
-                      <div className="h-4 w-3/4 rounded bg-gray-200"></div>
-                      <div className="mt-2 h-3 w-1/2 rounded bg-gray-200"></div>
-                    </div>
-                  </div>
+            <div className="grid grid-cols-2 gap-3">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="aspect-square rounded-2xl bg-gray-200"></div>
+                  <div className="mt-2 h-4 w-3/4 rounded bg-gray-200"></div>
+                  <div className="mt-2 h-3 w-1/2 rounded bg-gray-200"></div>
                 </div>
               ))}
             </div>
@@ -175,11 +170,11 @@ export default function HomePage() {
               </Link>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               {recentPosts.slice(0, 4).map((post, index) => (
                 <Link key={post._id} href="/catalog" className="block">
-                  <div className="flex gap-3 rounded-2xl bg-white p-3 shadow-sm transition-all active:scale-[0.98]">
-                    <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl">
+                  <div className="transition-all active:scale-[0.98]">
+                    <div className="relative aspect-square overflow-hidden rounded-2xl">
                       <Image
                         src={post.imageUrl || getCategoryImage(post.category, index)}
                         alt={post.title}
@@ -187,32 +182,27 @@ export default function HomePage() {
                         className="object-cover"
                         unoptimized
                       />
+                      <button className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white/80 text-[#C4A484] backdrop-blur-sm">
+                        <Bookmark className="h-4 w-4" strokeWidth={1.5} />
+                      </button>
                     </div>
-                    <div className="flex flex-1 flex-col justify-center py-0.5">
-                      <h3 className="line-clamp-2 text-[15px] font-semibold leading-tight text-gray-900">
-                        {post.title}
-                      </h3>
-                      <div className="mt-2 flex items-center gap-2">
+                    <h3 className="mt-2 line-clamp-2 text-[14px] font-semibold leading-tight text-gray-900">
+                      {post.title}
+                    </h3>
+                    <div className="mt-2 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
                         <Avatar className="h-5 w-5">
-                          <AvatarFallback className="bg-gray-100 text-[10px] font-medium text-gray-600">
+                          <AvatarFallback className="bg-[#C4A484]/20 text-[9px] font-medium text-[#C4A484]">
                             {getInitials(post.authorName || "Author")}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-[13px] text-gray-500">{post.authorName || "Unknown"}</span>
-                        <span className="text-gray-300">|</span>
-                        <span className="flex items-center gap-1 text-[12px] text-gray-400">
-                          <Clock className="h-3 w-3" />
-                          {formatTimeAgo(post.publishedAt || post.createdAt)}
-                        </span>
+                        <span className="text-[12px] text-gray-500">{post.authorName || "Unknown"}</span>
+                        <span className="text-[11px] text-gray-400">· {formatTimeAgo(post.publishedAt || post.createdAt)}</span>
                       </div>
+                      <button className="text-gray-400">
+                        <MoreVertical className="h-4 w-4" />
+                      </button>
                     </div>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="my-auto h-8 w-8 flex-shrink-0 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-                    >
-                      <Bookmark className="h-4 w-4" />
-                    </Button>
                   </div>
                 </Link>
               ))}
@@ -222,14 +212,17 @@ export default function HomePage() {
 
         {recentPosts.length > 4 && (
           <section className="mb-6">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-[20px] font-bold text-gray-900">More Articles</h2>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-[18px] font-bold text-gray-900">More Articles</h2>
+              <Link href="/catalog" className="text-gray-400 hover:text-gray-600">
+                <ChevronRight className="h-5 w-5" />
+              </Link>
             </div>
-            <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               {recentPosts.slice(4, 6).map((post, index) => (
                 <Link key={post._id} href="/catalog" className="block">
-                  <div className="flex gap-3 rounded-2xl bg-white p-3 shadow-sm transition-all active:scale-[0.98]">
-                    <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl">
+                  <div className="transition-all active:scale-[0.98]">
+                    <div className="relative aspect-square overflow-hidden rounded-2xl">
                       <Image
                         src={post.imageUrl || getCategoryImage(post.category, index + 4)}
                         alt={post.title}
@@ -237,27 +230,27 @@ export default function HomePage() {
                         className="object-cover"
                         unoptimized
                       />
+                      <button className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white/80 text-[#C4A484] backdrop-blur-sm">
+                        <Bookmark className="h-4 w-4" strokeWidth={1.5} />
+                      </button>
                     </div>
-                    <div className="flex flex-1 flex-col justify-center py-0.5">
-                      <h3 className="line-clamp-2 text-[15px] font-semibold leading-tight text-gray-900">
-                        {post.title}
-                      </h3>
-                      <div className="mt-2 flex items-center gap-2">
+                    <h3 className="mt-2 line-clamp-2 text-[14px] font-semibold leading-tight text-gray-900">
+                      {post.title}
+                    </h3>
+                    <div className="mt-2 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
                         <Avatar className="h-5 w-5">
-                          <AvatarFallback className="bg-gray-100 text-[10px] font-medium text-gray-600">
+                          <AvatarFallback className="bg-[#C4A484]/20 text-[9px] font-medium text-[#C4A484]">
                             {getInitials(post.authorName || "Author")}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-[13px] text-gray-500">{post.authorName || "Unknown"}</span>
+                        <span className="text-[12px] text-gray-500">{post.authorName || "Unknown"}</span>
+                        <span className="text-[11px] text-gray-400">· {formatTimeAgo(post.publishedAt || post.createdAt)}</span>
                       </div>
+                      <button className="text-gray-400">
+                        <MoreVertical className="h-4 w-4" />
+                      </button>
                     </div>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="my-auto h-8 w-8 flex-shrink-0 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-                    >
-                      <Bookmark className="h-4 w-4" />
-                    </Button>
                   </div>
                 </Link>
               ))}

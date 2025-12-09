@@ -1230,6 +1230,11 @@
     background-color: #007aff;
   }
 
+  .bg-\[\#C4A484\]\/20 {
+    background-color: #c4a48433;
+    background-color: lab(69.6786% 8.71283 21.2788 / .2);
+  }
+
   .bg-\[\#F2F2F7\] {
     background-color: #f2f2f7;
   }
@@ -1627,8 +1632,16 @@
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
 
+  .text-\[9px\] {
+    font-size: 9px;
+  }
+
   .text-\[10px\] {
     font-size: 10px;
+  }
+
+  .text-\[11px\] {
+    font-size: 11px;
   }
 
   .text-\[12px\] {
@@ -1649,6 +1662,10 @@
 
   .text-\[17px\] {
     font-size: 17px;
+  }
+
+  .text-\[18px\] {
+    font-size: 18px;
   }
 
   .text-\[20px\] {
@@ -1701,6 +1718,10 @@
 
   .text-\[\#007AFF\] {
     color: #007aff;
+  }
+
+  .text-\[\#C4A484\] {
+    color: #c4a484;
   }
 
   .text-\[\#FF6B35\] {
