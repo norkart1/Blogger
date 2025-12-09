@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { PenLine, Bookmark, Home, Compass, User, Plus, ChevronRight, MoreVertical } from "lucide-react"
+import { PenLine, Bookmark, Home, Compass, User, Plus, ChevronRight, MoreVertical, Pause, Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
@@ -22,10 +22,25 @@ interface Post {
 export default function HomePage() {
   const [recentPosts, setRecentPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
+  const [tickerIndex, setTickerIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
 
   useEffect(() => {
     fetchPosts()
   }, [])
+
+  useEffect(() => {
+    if (recentPosts.length === 0 || isPaused) return
+    const interval = setInterval(() => {
+      setTickerIndex((prev) => (prev + 1) % Math.min(recentPosts.length, 3))
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [recentPosts, isPaused])
+
+  const formatDate = (date: Date | string) => {
+    const d = new Date(date)
+    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+  }
 
   const fetchPosts = async () => {
     try {
@@ -114,6 +129,38 @@ export default function HomePage() {
       </header>
 
       <main className="mx-auto max-w-lg px-4 pb-24 pt-2">
+        {recentPosts.length > 0 && (
+          <div className="mb-4 flex items-center gap-2 overflow-hidden rounded-full bg-white px-1 py-1 shadow-sm">
+            <div className="flex items-center gap-1.5 rounded-full bg-[#22C55E] px-3 py-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-white"></span>
+              </span>
+              <span className="text-[12px] font-semibold text-white">Top Stories</span>
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <div className="transition-all duration-500">
+                <p className="truncate text-[13px] font-medium text-gray-800">
+                  {recentPosts[tickerIndex]?.title}
+                </p>
+                <p className="flex items-center gap-1 text-[11px] text-gray-500">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#22C55E] opacity-75"></span>
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#22C55E]"></span>
+                  </span>
+                  {formatDate(recentPosts[tickerIndex]?.publishedAt || recentPosts[tickerIndex]?.createdAt)}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsPaused(!isPaused)}
+              className="mr-1 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200"
+            >
+              {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+            </button>
+          </div>
+        )}
+
         <div className="mb-6 overflow-hidden rounded-[20px] bg-gradient-to-r from-[#FF6B35] to-[#F7931E] shadow-sm">
           <div className="flex items-center">
             <div className="flex-1 p-5">
