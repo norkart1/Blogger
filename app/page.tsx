@@ -115,11 +115,6 @@ export default function HomePage() {
                 <Bookmark className="h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/login">
-              <Avatar className="h-9 w-9 cursor-pointer ring-2 ring-primary/20 transition-all hover:ring-primary/40">
-                <AvatarFallback className="bg-primary/10 text-primary">U</AvatarFallback>
-              </Avatar>
-            </Link>
           </div>
         </div>
       </header>
