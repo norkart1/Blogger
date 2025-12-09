@@ -99,27 +99,17 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#F2F2F7]">
       <header className="sticky top-0 z-50 bg-[#F2F2F7]/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-lg items-center justify-between px-4 py-4">
+        <div className="mx-auto flex max-w-lg items-center justify-center px-4 py-4">
           <Link href="/" className="flex items-center">
             <Image
               src="/logo.png"
               alt="Al Jawahir"
-              width={200}
-              height={56}
-              className="h-14 w-auto object-contain"
+              width={220}
+              height={60}
+              className="h-16 w-auto object-contain"
               priority
             />
           </Link>
-          <div className="flex items-center gap-5">
-            <button className="text-gray-400 hover:text-gray-600">
-              <Bell className="h-5 w-5" strokeWidth={1.5} />
-            </button>
-            <Link href="/catalog">
-              <button className="text-gray-400 hover:text-gray-600">
-                <Bookmark className="h-5 w-5" strokeWidth={1.5} />
-              </button>
-            </Link>
-          </div>
         </div>
       </header>
 
