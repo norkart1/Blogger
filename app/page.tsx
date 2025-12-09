@@ -109,7 +109,7 @@ export default function HomePage() {
               className="h-10 w-auto object-contain sm:h-12"
               priority
             />
-            <span className="absolute bottom-1 right-[52px] h-2 w-2 rounded-full bg-red-500 animate-pulse sm:bottom-1.5 sm:right-[62px] sm:h-2.5 sm:w-2.5" style={{ animationDuration: '1s' }}></span>
+            <span className="absolute bottom-[6px] right-[38px] h-1.5 w-1.5 rounded-full bg-red-500 sm:bottom-[8px] sm:right-[46px] sm:h-2 sm:w-2" style={{ animation: 'blink 1s infinite' }}></span>
           </Link>
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" className="text-muted-foreground">
