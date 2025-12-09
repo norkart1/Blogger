@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const search = searchParams.get("search") || ""
     const category = searchParams.get("category") || ""
-    const published = searchParams.get("published")
+    const status = searchParams.get("status") || ""
 
     const query: Record<string, unknown> = {}
 
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       query.$or = [
         { title: { $regex: search, $options: "i" } },
         { content: { $regex: search, $options: "i" } },
-        { author: { $regex: search, $options: "i" } },
+        { excerpt: { $regex: search, $options: "i" } },
       ]
     }
 
@@ -25,8 +25,8 @@ export async function GET(request: NextRequest) {
       query.category = category
     }
 
-    if (published === "true") {
-      query.published = true
+    if (status && status !== "all") {
+      query.status = status
     }
 
     const posts = await db.collection<Post>("posts").find(query).sort({ createdAt: -1 }).toArray()
@@ -43,24 +43,25 @@ export async function POST(request: NextRequest) {
     const { db } = await connectToDatabase()
     const body = await request.json()
 
-    const slug = body.title
+    const slug = body.slug || body.title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "")
 
+    const now = new Date()
     const post: Omit<Post, "_id"> = {
       title: body.title,
       slug,
       content: body.content || "",
       excerpt: body.excerpt || "",
-      category: body.category || "General",
-      author: body.author || "Admin",
-      coverImage: body.coverImage || "",
+      authorId: body.authorId || "",
+      authorName: body.authorName || "",
+      category: body.category || "Other",
       tags: body.tags || [],
-      published: body.published || false,
-      views: 0,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      status: body.status || "draft",
+      publishedAt: body.status === "published" ? now : undefined,
+      createdAt: now,
+      updatedAt: now,
     }
 
     const result = await db.collection<Post>("posts").insertOne(post as Post)
@@ -77,6 +78,10 @@ export async function PUT(request: NextRequest) {
     const { db } = await connectToDatabase()
     const body = await request.json()
     const { _id, ...updateData } = body
+
+    if (updateData.status === "published" && !updateData.publishedAt) {
+      updateData.publishedAt = new Date()
+    }
 
     const result = await db
       .collection<Post>("posts")

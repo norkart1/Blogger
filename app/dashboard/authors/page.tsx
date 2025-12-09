@@ -1,0 +1,140 @@
+"use client"
+
+import { useState } from "react"
+import useSWR from "swr"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Plus, Search, Pencil, Trash2, Loader2 } from "lucide-react"
+import { AuthorForm } from "@/components/author-form"
+import { format } from "date-fns"
+import type { Author } from "@/lib/types"
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
+
+export default function AuthorsPage() {
+  const [search, setSearch] = useState("")
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingAuthor, setEditingAuthor] = useState<Author | null>(null)
+
+  const { data: authors, isLoading, mutate } = useSWR<Author[]>(`/api/authors?search=${search}`, fetcher)
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this author?")) return
+
+    await fetch(`/api/authors?id=${id}`, { method: "DELETE" })
+    mutate()
+  }
+
+  const handleEdit = (author: Author) => {
+    setEditingAuthor(author)
+    setDialogOpen(true)
+  }
+
+  const handleSuccess = () => {
+    setDialogOpen(false)
+    setEditingAuthor(null)
+    mutate()
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Authors Management</h1>
+          <p className="text-muted-foreground">Manage blog authors and contributors</p>
+        </div>
+        <Dialog
+          open={dialogOpen}
+          onOpenChange={(open) => {
+            setDialogOpen(open)
+            if (!open) setEditingAuthor(null)
+          }}
+        >
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Author
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>{editingAuthor ? "Edit Author" : "Add New Author"}</DialogTitle>
+            </DialogHeader>
+            <AuthorForm author={editingAuthor} onSuccess={handleSuccess} />
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-4">
+            <div className="relative flex-1 max-w-sm">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search authors..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="flex items-center justify-center h-32">
+              <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            </div>
+          ) : authors && authors.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Joined</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {authors.map((author) => (
+                  <TableRow key={author._id?.toString()}>
+                    <TableCell className="font-medium">{author.name}</TableCell>
+                    <TableCell>{author.email}</TableCell>
+                    <TableCell>
+                      <Badge variant={author.role === "admin" ? "default" : "secondary"}>
+                        {author.role}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{format(new Date(author.createdAt), "MMM d, yyyy")}</TableCell>
+                    <TableCell>
+                      <Badge variant={author.status === "active" ? "default" : "destructive"}>{author.status}</Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Button variant="ghost" size="icon" onClick={() => handleEdit(author)}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => handleDelete(author._id!.toString())}>
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No authors found. Add your first author!</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

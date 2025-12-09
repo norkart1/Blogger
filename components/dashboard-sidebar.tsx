@@ -3,13 +3,13 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, BookOpen, Users, ArrowLeftRight, BookMarked } from "lucide-react"
+import { LayoutDashboard, FileText, Users, MessageSquare, PenTool } from "lucide-react"
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/books", label: "Books", icon: BookOpen },
-  { href: "/dashboard/members", label: "Members", icon: Users },
-  { href: "/dashboard/borrowings", label: "Borrowings", icon: ArrowLeftRight },
+  { href: "/dashboard/posts", label: "Posts", icon: FileText },
+  { href: "/dashboard/authors", label: "Authors", icon: Users },
+  { href: "/dashboard/comments", label: "Comments", icon: MessageSquare },
 ]
 
 export function DashboardSidebar() {
@@ -20,7 +20,7 @@ export function DashboardSidebar() {
       <div className="p-6">
         <Link href="/dashboard" className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sidebar-primary">
-            <BookMarked className="h-5 w-5 text-sidebar-primary-foreground" />
+            <PenTool className="h-5 w-5 text-sidebar-primary-foreground" />
           </div>
           <span className="text-lg font-semibold">BlogHub</span>
         </Link>

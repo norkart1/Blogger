@@ -7,16 +7,14 @@ export async function GET(request: NextRequest) {
   try {
     const { db } = await connectToDatabase()
     const searchParams = request.nextUrl.searchParams
-    const approved = searchParams.get("approved")
+    const status = searchParams.get("status")
     const search = searchParams.get("search") || ""
     const postId = searchParams.get("postId")
 
     const query: Record<string, unknown> = {}
 
-    if (approved === "true") {
-      query.approved = true
-    } else if (approved === "false") {
-      query.approved = false
+    if (status && status !== "all") {
+      query.status = status
     }
 
     if (postId) {
@@ -51,7 +49,7 @@ export async function POST(request: NextRequest) {
       authorName: body.authorName,
       authorEmail: body.authorEmail,
       content: body.content,
-      approved: false,
+      status: "pending",
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -69,35 +67,27 @@ export async function PUT(request: NextRequest) {
   try {
     const { db } = await connectToDatabase()
     const body = await request.json()
-    const { _id, action } = body
+    const { _id, status } = body
 
-    if (action === "approve") {
-      await db.collection<Comment>("comments").updateOne(
-        { _id: new ObjectId(_id) },
-        {
-          $set: {
-            approved: true,
-            updatedAt: new Date(),
-          },
-        },
-      )
-      return NextResponse.json({ success: true })
+    if (!status || !["pending", "approved", "rejected"].includes(status)) {
+      return NextResponse.json({ error: "Invalid status" }, { status: 400 })
     }
 
-    if (action === "reject") {
-      await db.collection<Comment>("comments").updateOne(
-        { _id: new ObjectId(_id) },
-        {
-          $set: {
-            approved: false,
-            updatedAt: new Date(),
-          },
+    const result = await db.collection<Comment>("comments").updateOne(
+      { _id: new ObjectId(_id) },
+      {
+        $set: {
+          status,
+          updatedAt: new Date(),
         },
-      )
-      return NextResponse.json({ success: true })
+      },
+    )
+
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ error: "Comment not found" }, { status: 404 })
     }
 
-    return NextResponse.json({ error: "Invalid action" }, { status: 400 })
+    return NextResponse.json({ success: true })
   } catch (error) {
     console.error("Error updating comment:", error)
     return NextResponse.json({ error: "Failed to update comment" }, { status: 500 })

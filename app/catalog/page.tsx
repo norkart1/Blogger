@@ -2,64 +2,77 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { BookOpen, Search, Filter, ArrowLeft } from "lucide-react"
+import { FileText, Search, Filter, ArrowLeft, Calendar, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-interface Book {
+interface Post {
   _id: string
   title: string
-  author: string
-  isbn: string
+  slug: string
+  content: string
+  excerpt: string
+  authorId: string
+  authorName?: string
   category: string
-  publishedYear: number
-  quantity: number
-  availableQuantity: number
-  description?: string
+  tags: string[]
+  status: "draft" | "published" | "archived"
+  publishedAt?: Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 const CATEGORIES = [
-  "Fiction",
-  "Non-Fiction",
-  "Science",
-  "History",
-  "Biography",
   "Technology",
-  "Art",
-  "Philosophy",
-  "Children",
+  "Lifestyle",
+  "Business",
+  "Health",
+  "Travel",
+  "Food",
+  "Entertainment",
+  "Science",
+  "Sports",
   "Other",
 ]
 
-export default function CatalogPage() {
-  const [books, setBooks] = useState<Book[]>([])
+export default function BlogPage() {
+  const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState<string>("")
 
   useEffect(() => {
-    fetchBooks()
+    fetchPosts()
   }, [searchTerm, selectedCategory])
 
-  const fetchBooks = async () => {
+  const fetchPosts = async () => {
     try {
       const params = new URLSearchParams()
       if (searchTerm) params.set("search", searchTerm)
       if (selectedCategory && selectedCategory !== "all") params.set("category", selectedCategory)
+      params.set("status", "published")
 
-      const response = await fetch(`/api/books?${params}`)
+      const response = await fetch(`/api/posts?${params}`)
       if (response.ok) {
         const data = await response.json()
-        setBooks(data)
+        setPosts(data)
       }
     } catch (error) {
-      console.error("Error fetching books:", error)
+      console.error("Error fetching posts:", error)
     } finally {
       setLoading(false)
     }
+  }
+
+  const formatDate = (date: Date | string) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
   }
 
   return (
@@ -68,12 +81,12 @@ export default function CatalogPage() {
       <header className="border-b border-border bg-card">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
-            <BookOpen className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-foreground">LibraryHub</span>
+            <FileText className="h-8 w-8 text-primary" />
+            <span className="text-xl font-bold text-foreground">BlogHub</span>
           </Link>
           <nav className="flex items-center gap-4">
             <Link href="/membership">
-              <Button variant="ghost">Join Library</Button>
+              <Button variant="ghost">Subscribe</Button>
             </Link>
             <Link href="/login">
               <Button variant="outline">Admin Login</Button>
@@ -94,8 +107,8 @@ export default function CatalogPage() {
 
         {/* Page Title */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Book Catalog</h1>
-          <p className="mt-2 text-muted-foreground">Browse our collection and find your next read</p>
+          <h1 className="text-3xl font-bold text-foreground">Blog Posts</h1>
+          <p className="mt-2 text-muted-foreground">Explore our collection of articles and stories</p>
         </div>
 
         {/* Search and Filters */}
@@ -103,7 +116,7 @@ export default function CatalogPage() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by title, author, or ISBN..."
+              placeholder="Search posts..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -127,13 +140,13 @@ export default function CatalogPage() {
 
         {/* Results Count */}
         <p className="mb-4 text-sm text-muted-foreground">
-          {loading ? "Loading..." : `${books.length} book${books.length !== 1 ? "s" : ""} found`}
+          {loading ? "Loading..." : `${posts.length} post${posts.length !== 1 ? "s" : ""} found`}
         </p>
 
-        {/* Books Grid */}
+        {/* Posts Grid */}
         {loading ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {[...Array(8)].map((_, i) => (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[...Array(6)].map((_, i) => (
               <Card key={i} className="animate-pulse">
                 <CardHeader>
                   <div className="h-6 w-3/4 rounded bg-muted"></div>
@@ -145,37 +158,46 @@ export default function CatalogPage() {
               </Card>
             ))}
           </div>
-        ) : books.length === 0 ? (
+        ) : posts.length === 0 ? (
           <div className="py-12 text-center">
-            <BookOpen className="mx-auto h-12 w-12 text-muted-foreground" />
-            <h3 className="mt-4 text-lg font-semibold text-foreground">No books found</h3>
+            <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
+            <h3 className="mt-4 text-lg font-semibold text-foreground">No posts found</h3>
             <p className="mt-2 text-muted-foreground">Try adjusting your search or filter criteria</p>
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {books.map((book) => (
-              <Card key={book._id} className="flex flex-col">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => (
+              <Card key={post._id} className="flex flex-col">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between gap-2">
-                    <CardTitle className="line-clamp-2 text-lg">{book.title}</CardTitle>
+                    <CardTitle className="line-clamp-2 text-lg">{post.title}</CardTitle>
                   </div>
-                  <CardDescription className="line-clamp-1">{book.author}</CardDescription>
+                  <CardDescription className="flex items-center gap-2">
+                    <User className="h-3 w-3" />
+                    <span className="line-clamp-1">{post.authorName || "Unknown Author"}</span>
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="flex flex-1 flex-col justify-between gap-4">
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <Badge variant="secondary">{book.category}</Badge>
-                      <span className="text-xs text-muted-foreground">{book.publishedYear}</span>
+                      <Badge variant="secondary">{post.category}</Badge>
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Calendar className="h-3 w-3" />
+                        {formatDate(post.publishedAt || post.createdAt)}
+                      </span>
                     </div>
-                    {book.description && (
-                      <p className="line-clamp-2 text-sm text-muted-foreground">{book.description}</p>
+                    {post.excerpt && (
+                      <p className="line-clamp-3 text-sm text-muted-foreground">{post.excerpt}</p>
                     )}
-                    <p className="text-xs text-muted-foreground">ISBN: {book.isbn}</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Badge variant={book.availableQuantity > 0 ? "default" : "destructive"}>
-                      {book.availableQuantity > 0 ? `${book.availableQuantity} Available` : "Not Available"}
-                    </Badge>
+                    {post.tags && post.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {post.tags.slice(0, 3).map((tag) => (
+                          <Badge key={tag} variant="outline" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -188,11 +210,11 @@ export default function CatalogPage() {
       <footer className="mt-auto border-t border-border bg-card px-4 py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <BookOpen className="h-6 w-6 text-primary" />
-            <span className="font-semibold text-foreground">LibraryHub</span>
+            <FileText className="h-6 w-6 text-primary" />
+            <span className="font-semibold text-foreground">BlogHub</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} LibraryHub. All rights reserved.
+            &copy; {new Date().getFullYear()} BlogHub. All rights reserved.
           </p>
         </div>
       </footer>

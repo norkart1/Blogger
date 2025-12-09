@@ -6,12 +6,12 @@ export interface Post {
   slug: string
   content: string
   excerpt: string
+  authorId: string
+  authorName?: string
   category: string
-  author: string
-  coverImage?: string
   tags: string[]
-  published: boolean
-  views: number
+  status: "draft" | "published" | "archived"
+  publishedAt?: Date
   createdAt: Date
   updatedAt: Date
 }
@@ -30,12 +30,12 @@ export interface Author {
 
 export interface Comment {
   _id?: ObjectId
-  postId: ObjectId
-  postTitle: string
+  postId: ObjectId | string
+  postTitle?: string
   authorName: string
   authorEmail: string
   content: string
-  approved: boolean
+  status: "pending" | "approved" | "rejected"
   createdAt: Date
   updatedAt: Date
 }

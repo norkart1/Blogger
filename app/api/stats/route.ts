@@ -5,23 +5,23 @@ export async function GET() {
   try {
     const { db } = await connectToDatabase()
 
-    const [totalPosts, totalAuthors, pendingComments, totalViews] = await Promise.all([
+    const [totalPosts, publishedPosts, totalAuthors, totalComments, pendingComments] = await Promise.all([
       db.collection("posts").countDocuments(),
+      db.collection("posts").countDocuments({ status: "published" }),
       db.collection("authors").countDocuments(),
-      db.collection("comments").countDocuments({ approved: false }),
-      db.collection("posts").aggregate([
-        { $group: { _id: null, total: { $sum: "$views" } } }
-      ]).toArray().then(result => result[0]?.total || 0),
+      db.collection("comments").countDocuments(),
+      db.collection("comments").countDocuments({ status: "pending" }),
     ])
 
-    const recentPosts = await db.collection("posts").find().sort({ createdAt: -1 }).limit(5).toArray()
+    const recentComments = await db.collection("comments").find().sort({ createdAt: -1 }).limit(5).toArray()
 
     return NextResponse.json({
       totalPosts,
+      publishedPosts,
       totalAuthors,
+      totalComments,
       pendingComments,
-      totalViews,
-      recentPosts,
+      recentComments,
     })
   } catch (error) {
     console.error("Error fetching stats:", error)
