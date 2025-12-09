@@ -1825,10 +1825,6 @@
     color: var(--color-gray-600);
   }
 
-  .text-gray-700 {
-    color: var(--color-gray-700);
-  }
-
   .text-gray-900 {
     color: var(--color-gray-900);
   }
@@ -2137,18 +2133,6 @@
   }
 
   @media (hover: hover) {
-    .hover\:bg-gray-200\/60:hover {
-      background-color: #e5e7eb99;
-    }
-
-    @supports (color: color-mix(in lab, red, red)) {
-      .hover\:bg-gray-200\/60:hover {
-        background-color: color-mix(in oklab, var(--color-gray-200) 60%, transparent);
-      }
-    }
-  }
-
-  @media (hover: hover) {
     .hover\:bg-muted\/50:hover {
       background-color: var(--muted);
     }
@@ -2229,6 +2213,12 @@
   @media (hover: hover) {
     .hover\:text-gray-600:hover {
       color: var(--color-gray-600);
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:text-gray-700:hover {
+      color: var(--color-gray-700);
     }
   }
 
