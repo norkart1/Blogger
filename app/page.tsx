@@ -125,29 +125,27 @@ export default function HomePage() {
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-6">
-        <div className="relative mb-8 overflow-hidden rounded-3xl bg-gradient-to-r from-primary/90 to-accent/80 shadow-lg">
-          <div className="flex flex-col items-start gap-4 p-6 md:flex-row md:items-center md:justify-between md:pr-0">
-            <div className="flex-1 text-primary-foreground">
-              <h2 className="mb-2 text-xl font-bold md:text-2xl">Learn how to become a great writer right now!</h2>
+        <div className="relative mb-8 overflow-hidden rounded-3xl bg-gradient-to-r from-primary to-accent/70 shadow-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex-1 p-6 text-primary-foreground md:py-8 md:pl-8">
+              <h2 className="mb-3 text-lg font-bold leading-snug md:text-2xl">Learn how to become a great writer right now!</h2>
               <Link href="/membership">
                 <Button 
                   variant="secondary" 
-                  className="mt-2 rounded-full bg-white/90 text-primary hover:bg-white"
+                  className="rounded-full border-2 border-white/30 bg-white/95 px-6 text-primary hover:bg-white"
                 >
                   Read more
                 </Button>
               </Link>
             </div>
-            <div className="hidden md:block">
-              <div className="relative h-36 w-44 overflow-hidden">
-                <Image
-                  src="/banner-woman.jpg"
-                  alt="Woman reading books"
-                  fill
-                  className="object-contain object-right-bottom"
-                  priority
-                />
-              </div>
+            <div className="relative h-40 w-32 flex-shrink-0 md:h-48 md:w-48">
+              <Image
+                src="/banner-woman.jpg"
+                alt="Woman with books"
+                fill
+                className="object-cover object-top"
+                priority
+              />
             </div>
           </div>
         </div>
