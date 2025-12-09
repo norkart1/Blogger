@@ -171,6 +171,7 @@
 
 @layer theme {
   :root, :host {
+    --color-red-500: #fb2c36;
     --color-green-600: #00a544;
     --color-black: #000;
     --color-white: #fff;
@@ -219,6 +220,7 @@
 
   @supports (color: lab(0% 0 0)) {
     :root, :host {
+      --color-red-500: lab(55.4814% 75.0732 48.8528);
       --color-green-600: lab(59.0978% -58.6621 41.2579);
     }
   }
@@ -561,8 +563,16 @@
     right: calc(var(--spacing) * 4);
   }
 
+  .right-\[52px\] {
+    right: 52px;
+  }
+
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
+  }
+
+  .bottom-1 {
+    bottom: calc(var(--spacing) * 1);
   }
 
   .bottom-2 {
@@ -758,6 +768,10 @@
     height: 100%;
   }
 
+  .h-2 {
+    height: calc(var(--spacing) * 2);
+  }
+
   .h-3 {
     height: calc(var(--spacing) * 3);
   }
@@ -848,6 +862,10 @@
 
   .w-1\/2 {
     width: 50%;
+  }
+
+  .w-2 {
+    width: calc(var(--spacing) * 2);
   }
 
   .w-3 {
@@ -1367,6 +1385,10 @@
     .bg-primary\/10 {
       background-color: color-mix(in oklab, var(--primary) 10%, transparent);
     }
+  }
+
+  .bg-red-500 {
+    background-color: var(--color-red-500);
   }
 
   .bg-secondary {
@@ -2360,8 +2382,32 @@
   }
 
   @media (min-width: 40rem) {
+    .sm\:right-\[62px\] {
+      right: 62px;
+    }
+  }
+
+  @media (min-width: 40rem) {
+    .sm\:bottom-1\.5 {
+      bottom: calc(var(--spacing) * 1.5);
+    }
+  }
+
+  @media (min-width: 40rem) {
+    .sm\:h-2\.5 {
+      height: calc(var(--spacing) * 2.5);
+    }
+  }
+
+  @media (min-width: 40rem) {
     .sm\:h-12 {
       height: calc(var(--spacing) * 12);
+    }
+  }
+
+  @media (min-width: 40rem) {
+    .sm\:w-2\.5 {
+      width: calc(var(--spacing) * 2.5);
     }
   }
 

@@ -100,7 +100,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center relative">
             <Image
               src="/logo.png"
               alt="Al Jawahir"
@@ -109,6 +109,7 @@ export default function HomePage() {
               className="h-10 w-auto object-contain sm:h-12"
               priority
             />
+            <span className="absolute bottom-1 right-[52px] h-2 w-2 rounded-full bg-red-500 animate-pulse sm:bottom-1.5 sm:right-[62px] sm:h-2.5 sm:w-2.5" style={{ animationDuration: '1s' }}></span>
           </Link>
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="icon" className="text-muted-foreground">
